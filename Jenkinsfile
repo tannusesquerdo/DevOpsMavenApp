@@ -24,7 +24,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}'
+                    sh "docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Docker Login') {
             steps {
                 script {
-                    sh 'docker login -u tannusesquerdo -p ${DOCKER_HUB_PWD}'
+                    sh "docker login -u tannusesquerdo -p ${DOCKER_HUB_PWD}"
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh 'docker push tannusesquerdo/devops-maven:${env.BUILD_NUMBER}'
+                    sh "docker push tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
                 }
             }
         }
