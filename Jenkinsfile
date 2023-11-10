@@ -5,6 +5,11 @@ pipeline {
         DOCKER_HUB_PWD = credentials('docker-hub-pwd')
     }
 
+    tools {
+        maven 'MAVEN'
+        docker 'Docker'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -15,8 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mvnHome = tool 'MAVEN'
-                    sh "${mvnHome}/bin/mvn clean package"
+                    sh "mvn clean package"
                 }
             }
         }
@@ -24,7 +28,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerHome = tool 'Docker'
                     sh "docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
                 }
             }
