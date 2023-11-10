@@ -1,18 +1,41 @@
 pipeline {
     agent any
-    tools {
-        maven 'MAVEN'
-        jdk 'JDK'
+
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
     }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/tannusesquerdo/DevOpsMavenApp'
+                checkout scm
             }
         }
-        stage('Build with Maven') {
+
+        stage('Build') {
             steps {
-                sh 'mvn clean install'
+                script {
+                    def mvnHome = tool 'Maven'
+                    withMaven(maven: mvnHome) {
+                        sh "${mvnHome}/bin/mvn clean package"
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def dockerImage = docker.build("tannusesquerdo/devops-lab3-image:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    dockerImage.push()
+                }
             }
         }
     }
