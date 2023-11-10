@@ -7,7 +7,7 @@
 <title>Centennial College</title>
 </head>
 <body>
-    <h1 id="greeting-message">Welcome to COMP367</h1>
+	<h1 id="greeting-message">Welcome to COMP367</h1>
     <script>
         // JavaScript code to determine the time of day
         var currentTime = new Date();
