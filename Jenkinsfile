@@ -6,7 +6,6 @@ pipeline {
     }
 
     tools {
-        maven 'MAVEN',
         docker 'Docker'
     }
 
@@ -20,7 +19,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "mvn clean package"
+                    def mvnHome = tool 'MAVEN'
+                    sh "${mvnHome}/bin/mvn clean package"
                 }
             }
         }
@@ -28,6 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    def dockerHome = tool 'Docker'
                     sh "docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
                 }
             }
