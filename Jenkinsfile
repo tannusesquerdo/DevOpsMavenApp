@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mvnHome = tool 'Maven'
+                    def mvnHome = tool 'MAVEN'
                     withMaven(maven: mvnHome) {
                         sh "${mvnHome}/bin/mvn clean package"
                     }
