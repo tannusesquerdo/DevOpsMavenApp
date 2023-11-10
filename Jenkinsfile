@@ -2,14 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
-        DOCKER_IMAGE_NAME = 'tannusesquerdo/devops-lab3-image'
+        DOCKER_HUB_PWD = credentials('docker-hub-pwd')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main', url: 'https://github.com/tannusesquerdo/DevOpsMavenApp'
             }
         }
 
@@ -25,10 +24,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Authenticate with Docker Hub using credentials
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        // Build the Docker image
-                        def dockerImage = docker.build(DOCKER_IMAGE_NAME + ":${env.BUILD_NUMBER}")
+                        sh 'docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}'
+                    }
+                }
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                script {
+                        sh 'docker login -u tannusesquerdo -p ${DOCKER_HUB_PWD}'
                     }
                 }
             }
@@ -37,7 +42,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    dockerImage.push()
+                    sh 'docker push tannusesquerdo/devops-maven:${env.BUILD_NUMBER}'
                 }
             }
         }
