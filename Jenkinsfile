@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     def dockerHome = tool 'Docker'
-                    def dockerImage = sh "docker build -t tannusesquerdo/devops-lab3-image:${env.BUILD_NUMBER}"
+                    def dockerImage = sh "${dockerHome}/bin/docker build -t tannusesquerdo/devops-lab3-image:${env.BUILD_NUMBER}"
                 }
             }
         }
