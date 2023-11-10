@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
+        DOCKER_IMAGE_NAME = 'tannusesquerdo/devops-lab3-image'
     }
 
     stages {
@@ -24,8 +25,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerHome = tool 'Docker'
-                    def dockerImage = sh "${dockerHome}/bin/docker build -t tannusesquerdo/devops-lab3-image:${env.BUILD_NUMBER}"
+                    // Authenticate with Docker Hub using credentials
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        // Build the Docker image
+                        def dockerImage = docker.build(DOCKER_IMAGE_NAME + ":${env.BUILD_NUMBER}")
+                    }
                 }
             }
         }
