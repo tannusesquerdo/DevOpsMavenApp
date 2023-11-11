@@ -29,7 +29,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build(DOCKER_IMAGE_NAME + ":${env.BUILD_NUMBER} .")
+                    def dockerImage = docker.build(DOCKER_IMAGE_NAME + " .")
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh "docker push tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
+                    sh "docker push ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
