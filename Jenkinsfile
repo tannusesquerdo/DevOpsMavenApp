@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_PWD = credentials('docker-hub-pwd')
+        DOCKER_IMAGE_NAME = 'tannus/devops-maven'
     }
 
     tools {
@@ -28,8 +29,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerHome = tool 'Docker'
-                    sh "docker build -t tannusesquerdo/devops-maven:${env.BUILD_NUMBER}"
+                    def dockerImage = docker.build(DOCKER_IMAGE_NAME + ":${env.BUILD_NUMBER} .")
                 }
             }
         }
