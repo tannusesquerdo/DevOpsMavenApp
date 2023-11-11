@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_PWD = credentials('docker-hub-pwd')
-        DOCKER_IMAGE_NAME = 'tannus/devops-maven'
+        DOCKER_IMAGE_NAME = 'tannusesquerdo/devops-maven'
     }
 
     tools {
