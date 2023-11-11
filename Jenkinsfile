@@ -29,7 +29,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build(DOCKER_IMAGE_NAME + " .")
+                    def dockerImage = docker.build(DOCKER_IMAGE_NAME)
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh "docker push ${DOCKER_IMAGE_NAME}"
+                    dockerImage.push()
                 }
             }
         }
